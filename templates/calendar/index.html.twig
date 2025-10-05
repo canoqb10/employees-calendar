@@ -1,0 +1,119 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Lista de empleados{% endblock %}
+
+{% block body %}
+    <div id="app">
+        <div class="calendar-header">
+            <h1>Calendario de Empleados</h1>
+            <a href="{{ path('app_home') }}" class="btn btn-primary">Volver a la lista de empleados</a>
+        </div>
+        <div id='calendar'></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    cargando: true,
+                    error: null,
+                    events:[
+                            { 
+                                id: '1', 
+                                resourceId: '0', 
+                                start: '2025-10-04T10:00:00', 
+                                end: '2025-10-04T18:00:00', 
+                                title: 'Evento 1' 
+                            },
+                            { 
+                                id: '2', 
+                                resourceId: '1', 
+                                start: '2025-10-04T14:00:00', 
+                                end: '2025-10-04T16:00:00', 
+                                title: 'Evento 2' 
+                            }
+                        ]
+                }
+            },
+            methods: {
+                initCalendar() {
+                    const calendarEl = document.getElementById('calendar');
+                    
+                    this.calendar = new FullCalendar.Calendar(calendarEl, {
+                        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                        selectable: true,
+                        initialView: 'resourceTimelineDay',
+                        timeZone: 'UTC-6',
+                        headerToolbar: null,
+                        scrollTime: '08:00',
+                        aspectRatio: 1.5,
+                        views: {
+                            resourceTimelineDay: {
+                                buttonText: 'Día',
+                                slotDuration: '00:15'
+                            },
+                            resourceTimelineTenDay: {
+                                type: 'resourceTimeline',
+                                duration: { days: 10 },
+                                buttonText: '10 días'
+                            },
+                            resourceTimelineMonth: {
+                                buttonText: 'Mes'
+                            }
+                        },
+                        editable: true,
+                        selectable: true,
+                        resourceAreaHeaderContent: 'Semana',
+                        resources: [
+                            { id: '0', title: 'Domingo' },
+                            { id: '1', title: 'Lunes' },
+                            { id: '2', title: 'Martes' },
+                            { id: '3', title: 'Miercoles' },
+                            { id: '4', title: 'Jueves' },
+                            { id: '5', title: 'Viernes' },
+                            { id: '6', title: 'Sabado' },
+                        ],
+                        events: this.events,
+                        eventClick: (info) => {
+                            alert('Evento: ' + info.event.title);
+                        },
+                        select: (info) =>{
+                           console.log(this.events)
+                            if(this.calendar.getEvents().some(event =>
+                                (info.resource.id === event.getResources()[0].id)
+                            )){
+                                alert('Ya existe un evento en este horario');
+                                return;
+                            }
+                            const newEvent = {
+                                id: String(this.events.length + 1),
+                                title: 'Nuevo Evento',
+                                start: info.startStr,
+                                end: info.endStr,
+                                resourceId: info.resource.id
+                            }; 
+                            console.log(newEvent)
+                            this.calendar.addEvent(newEvent);
+                            this.events.push(newEvent);
+                        }
+                    });
+                    
+                    this.calendar.render();
+                },
+                getEvents(){
+                    console.log(this.events);
+                },
+            },
+            mounted() {
+                this.$nextTick(() => {
+                    this.initCalendar();
+                });
+            }
+        }).mount('#app');
+    </script>
+{% endblock %}
