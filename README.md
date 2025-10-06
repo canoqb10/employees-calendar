@@ -1,11 +1,12 @@
 # Employees Calendar
 
-Un sistema de gestión de horarios para empleados desarrollado con Symfony 6 y Vue.js. Permite visualizar y administrar los horarios de trabajo de los empleados de manera interactiva utilizando un calendario.
+Un sistema de gestión de horarios para empleados desarrollado con Symfony 7 y Vue.js.
+Permite visualizar y administrar los horarios de trabajo de los empleados de manera interactiva utilizando un calendario.
 
 ## Autor
-Nombre: Jose Alberto Cano Govea
-Email: juliojacg@hotmail.com
 
+- Nombre: Jose Alberto Cano Govea
+- Email: juliojacg@hotmail.com
 
 ## Descripción
 Esta aplicación permite:
@@ -65,51 +66,35 @@ git clone git@github.com:canoqb10/employees-calendar.git
 cd employees-calendar
 ```
 
-2. Copiar el archivo de variables de entorno:
+3. Construir e instalar dependencias
 ```bash
-cp .env.example .env
+  make build
 ```
 
-3. Construir y levantar los contenedores Docker:
+4. Levantar los contenedores Docker
 ```bash
-docker-compose up -d
+  make run
 ```
 
-4. Instalar dependencias:
+4. Instalar el proyecto en los contenedores
 ```bash
-docker-compose exec php composer install
+  make prepare
 ```
 
 5. Crear la base de datos y cargar los datos iniciales:
-```bash
-docker-compose exec php bin/console doctrine:database:create
-docker-compose exec php bin/console doctrine:schema:update --force
-psql -h localhost -U postgres -d employees_calendar -f db/employes_calendar_model.sql
-```
-
-## Uso con Make
-
-El proyecto incluye un Makefile para simplificar las operaciones comunes:
+  - Copiar el script y ejecutarlo en tu servidor de bd
 
 ```bash
-# Iniciar el proyecto
-make start
-
-# Detener el proyecto
-make stop
-
-# Reiniciar el proyecto
-make restart
-
-# Acceder al contenedor PHP
-make ssh-php
-
-# Instalar dependencias
-make install
-
-# Limpiar caché
-make cache-clear
+   db/employes_calendar_model.sql
 ```
+  Datos de conexión
+
+```bash
+  POSTGRES_DB: employees_calendar
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: admin
+```
+
 
 ## Acceso a la Aplicación
 
@@ -117,8 +102,9 @@ make cache-clear
 - Base de datos:
   - Host: localhost
   - Puerto: 5432
-  - Usuario: postgres
+  - Usuario: admin
   - Base de datos: employees_calendar
+  - Password: admin
 
 ## Características Principales
 
@@ -136,12 +122,3 @@ make cache-clear
 - Vista individual de calendario por empleado
 - Registro de horas trabajadas
 
-## Contribuir
-1. Fork el proyecto
-2. Crea tu rama de características (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Licencia
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
