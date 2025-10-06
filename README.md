@@ -56,7 +56,7 @@ employees-calendar/
 ## Requisitos Previos
 - Docker
 - Docker Compose
-- Make (opcional, para usar comandos simplificados)
+- Make
 
 ## Instalación
 
