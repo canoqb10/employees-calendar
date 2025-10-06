@@ -1,0 +1,19 @@
+body {
+    /* max-width: 1200px; */
+    margin: 2rem auto;
+    padding: 0 3rem;
+    background-color: #F0F4F8;
+}
+
+h1 {
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.card-home {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card-body-home {
+    padding: 2rem;
+}

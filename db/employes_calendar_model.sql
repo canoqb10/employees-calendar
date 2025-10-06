@@ -16,7 +16,8 @@ CREATE TABLE "public"."schedule" (
   "start_date" timestamptz NOT NULL,
   "end_date" timestamptz NOT NULL,
   "title" varchar(50) NOT NULL,
-  "employee_id" int4 NOT NULL REFERENCES "public"."employees" ("id")
+  "employee_id" int4 NOT NULL REFERENCES "public"."employees" ("id"),
+  "deleted_at" timestamptz NULL
 );
 
 CREATE INDEX "idx_schedule_start_date" ON "public"."schedule" (

@@ -1,12 +1,21 @@
 
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/calendar.css" rel="stylesheet" /> 
+{% endblock %}
 {% block title %}Calendario de Empleados{% endblock %}
 
 {% block body %}
     <div id="calendar-app" data-events='{{ events|json_encode }}'>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Employees</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+            </ol>
+        </nav>
         <div class="calendar-header">
-            <h1>Calendario del Empleado:  {{ employee.name }} {{ employee.lastname }} </h1>
-            <a href="{{ path('app_home') }}" class="btn btn-primary">Volver a la lista de empleados</a>
+            <h2>{{ employee.name }} {{ employee.lastname }} </h2>
             <button class="btn btn-primary" @click="saveCalendar({{employee.id}})">Guardar Eventos</button>
         </div>
 

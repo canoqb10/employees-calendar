@@ -24,7 +24,10 @@ class CalendarService
         }
 
         $eventsData = $this->entityManager->getRepository(Schedule::class)->findBy(
-            ['employee_id' => $employeeData]
+            [
+                'employee_id' => $employeeData,
+                'deleted_at' => NULL
+            ]
         );
         
         $events = array_map(fn($event) => [
@@ -58,14 +61,33 @@ class CalendarService
         foreach ($data as $item) {
             if(!isset($item['id'])){
                 $schedule = new Schedule();
+                
                 $schedule->setTitle($item['title']);
                 $schedule->setEmployeeId($employee);
                 $schedule->setStartDate(new \DateTimeImmutable($item['start']));
                 $schedule->setEndDate(new \DateTimeImmutable($item['end']));
+                
+                $this->entityManager->persist($schedule);
+            } else {
+                $schedule = $this->entityManager->getRepository(Schedule::class)->find($item['id']);
+                
+                if (!$schedule) {
+                    throw $this->createNotFoundException(
+                        'No schdule found for id '.$item['id']
+                    );
+                }
+                dump(isset($item['deleted']));
+                if(isset($item['deleted'])){
+                    $schedule->setDeletedAt(new \DateTimeImmutable($item['end']));    
+                } 
+                
+                $schedule->setTitle($item['title']);
+                $schedule->setStartDate(new \DateTimeImmutable($item['start']));
+                $schedule->setEndDate(new \DateTimeImmutable($item['end']));
+                
                 $this->entityManager->persist($schedule);
             }
         }
         $this->entityManager->flush();
-
     }
 }

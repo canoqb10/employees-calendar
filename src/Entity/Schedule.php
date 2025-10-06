@@ -19,6 +19,9 @@ class Schedule
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
     private ?\DateTimeImmutable $end_date = null;
+    
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $deleted_at = null;
 
     #[ORM\Column(length: 50)]
     private ?string $title = null;
@@ -60,6 +63,18 @@ class Schedule
     public function setEndDate(\DateTimeImmutable $end_date): static
     {
         $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getDeleteAt(): ?\DateTimeImmutable
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(\DateTimeImmutable $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
 
         return $this;
     }
