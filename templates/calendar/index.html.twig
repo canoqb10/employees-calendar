@@ -33,7 +33,6 @@
     
     <script>
         const data = JSON.parse(document.getElementById('calendar-data').textContent);
-        console.log('Events from template:', data);
         vueApp('calendar-app', 
             calendarAppConfig({ 
                 save: '{{ path('calendar_employee_save', {'employeeId': employee.id}) }}',
