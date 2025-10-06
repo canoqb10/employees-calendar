@@ -1,0 +1,42 @@
+
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/calendar.css" rel="stylesheet" /> 
+{% endblock %}
+{% block title %}Calendario de Empleados{% endblock %}
+
+{% block body %}
+    <div id="calendar-app" data-events='{{ events|json_encode }}'>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Employees</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+            </ol>
+        </nav>
+        <div class="calendar-header">
+            <h2>{{ employee.name }} {{ employee.lastname }} </h2>
+            <button class="btn btn-primary" @click="saveCalendar({{employee.id}})">Guardar Eventos</button>
+        </div>
+
+        <div id='calendar'></div>
+        
+        <script id="calendar-data" type="application/json">
+            {{- { employee: employee, events: events }|json_encode|raw -}}
+        </script>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/vue/domains/calendar.js"></script>
+    {{ parent() }}
+    
+    <script>
+        const data = JSON.parse(document.getElementById('calendar-data').textContent);
+        vueApp('calendar-app', 
+            calendarAppConfig({ 
+                save: '{{ path('calendar_employee_save', {'employeeId': employee.id}) }}',
+            }, data),
+        );
+    </script>
+{% endblock %}
