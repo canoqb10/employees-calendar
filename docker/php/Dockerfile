@@ -14,8 +14,8 @@ COPY ./php.ini /usr/local/etc/php/php.ini
 
 RUN apt-get update \
     && apt-get install -y git acl openssl openssh-client wget zip vim libssh-dev \
-    && apt-get install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
-    && docker-php-ext-install intl pdo pdo_mysql zip gd soap bcmath sockets \
+    && apt-get install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev libpq-dev  \
+    && docker-php-ext-install intl pdo pdo_pgsql zip gd soap bcmath sockets \
     && pecl install xdebug \
     && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
 
@@ -29,7 +29,7 @@ RUN mv php-cs-fixer /usr/local/bin/php-cs-fixer
 COPY --link \
     --from=ghcr.io/symfony-cli/symfony-cli:latest \
     /usr/local/bin/symfony /usr/local/bin/symfony
-    
+
 RUN mkdir -p /appdata/www
 
 WORKDIR /appdata/www

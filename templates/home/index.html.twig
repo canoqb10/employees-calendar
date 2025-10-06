@@ -6,43 +6,39 @@
 {% block body %}
     <div id="app">
         <h1>Lista de empleados</h1>
-        
-        <div v-if="cargando">Cargando...</div>
-        
-        <div v-else>
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th style="border: 1px solid #ddd; padding: 8px;">ID</th>
-                        <th style="border: 1px solid #ddd; padding: 8px;">Nombre</th>
-                        <th style="border: 1px solid #ddd; padding: 8px;">Posición</th>
-                        <th style="border: 1px solid #ddd; padding: 8px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="employee in employees" :key="employee.id">
-                        <td style="border: 1px solid #ddd; padding: 8px;">{{ "{{ employee.id }}" }}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">{{ "{{ employee.name }}" }}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">{{ "{{ employee.position }}" }}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">
-                        <a :href="`/calendar/${employee.id}`" class="btn btn-primary">
-                            Ver calendar
-                        </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div v-if="error" style="color: red; margin-top: 10px;">
-            {{ "{{ error }}" }}
-        </div>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Lastname</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Email</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Position</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Created at</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Created by</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for employee in employees %}
+                <tr v-for="employee in employees" :key="employee.id">
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.name }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.lastname }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.email }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.position }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.created_at }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ employee.created_by }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">
+                    <a href="/employees/{{employee.id}}/calendar" class="btn btn-primary">
+                        Ver calendar
+                    </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        initEmployeesApp({ employees: '{{ path('employees_datos') }}'});
-    </script>
 {% endblock %}
 
